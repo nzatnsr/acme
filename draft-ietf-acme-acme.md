@@ -815,7 +815,7 @@ relation indicating where further entries can be acquired.
 ~~~~~~~~~~
 HTTP/1.1 200 OK
 Content-Type: application/json
-Link: <https://example.com/acme/acct/1/orders?cursor=2>, rel="next"
+Link: <https://example.com/acme/acct/1/orders?cursor=2>;rel="next"
 
 {
   "orders": [
@@ -946,7 +946,7 @@ identifier (required, object):
 
 status (required, string):
 : The status of this authorization.  Possible values are: "pending",
-"valid", "invalid", "deactivated", and "revoked".
+"valid", "invalid", "deactivated", "expired", and "revoked".
 
 expires (optional, string):
 : The timestamp after which the server will consider this authorization invalid,
@@ -1183,6 +1183,10 @@ onlyReturnExisting (optional, boolean):
   look up an account URL based on an account key (see
   {{finding-an-account-url-given-a-key}}).
 
+externalAccountBinding (optional, object):
+: An optional field for binding the new account with an existing non-ACME
+  account (see {{ external-account-binding }}).
+
 ~~~~~~~~~~
 POST /acme/new-account HTTP/1.1
 Host: example.com
@@ -1259,7 +1263,9 @@ Link: <https://example.com/acme/some-directory>;rel="index"
   "contact": [
     "mailto:cert-admin@example.com",
     "mailto:admin@example.com"
-  ]
+  ],
+
+  "orders": "https://example.com/acme/acct/1/orders"
 }
 ~~~~~~~~~~
 
@@ -2615,7 +2621,7 @@ Initial contents: The fields and descriptions defined in {{account-objects}}.
 | contact                  | array of string | true         | RFC XXXX  |
 | externalAccountBinding   | object          | true         | RFC XXXX  |
 | termsOfServiceAgreed     | boolean         | true         | RFC XXXX  |
-| orders                   | array of string | false        | RFC XXXX  |
+| orders                   | string          | false        | RFC XXXX  |
 
 \[\[ RFC EDITOR: Please replace XXXX above with the RFC number assigned to this
 document ]]
